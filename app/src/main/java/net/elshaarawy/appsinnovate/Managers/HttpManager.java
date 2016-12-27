@@ -25,6 +25,9 @@ public class HttpManager {
         try {
 
             connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(3000);
+            connection.setReadTimeout(3000);
+            connection.setRequestMethod("GET");
 
             reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
             StringBuilder stringBuilder = new StringBuilder();

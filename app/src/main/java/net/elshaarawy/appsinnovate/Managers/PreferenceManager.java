@@ -57,14 +57,29 @@ public class PreferenceManager {
     }
 
 
+    public boolean getBoolean(String key) {
+        return sharedPreference.getBoolean(key, false);
+    }
 
-    public boolean getBoolean(String key) {return sharedPreference.getBoolean(key, false);}
-    public String getString(String key) {return sharedPreference.getString(key, null);}
-    public float getFloat(String key){return sharedPreference.getFloat(key,0.0f);}
-    public int getInt(String key){return sharedPreference.getInt(key,0);}
-    public long getLong(String key){return sharedPreference.getLong(key,0);}
-    public Set<String> getStringSet(String key){return sharedPreference.getStringSet(key,null);}
+    public String getString(String key) {
+        return sharedPreference.getString(key, null);
+    }
 
+    public float getFloat(String key) {
+        return sharedPreference.getFloat(key, 0.0f);
+    }
+
+    public int getInt(String key) {
+        return sharedPreference.getInt(key, 0);
+    }
+
+    public long getLong(String key) {
+        return sharedPreference.getLong(key, 0);
+    }
+
+    public Set<String> getStringSet(String key) {
+        return sharedPreference.getStringSet(key, null);
+    }
 
 
     public static final class Keys {
