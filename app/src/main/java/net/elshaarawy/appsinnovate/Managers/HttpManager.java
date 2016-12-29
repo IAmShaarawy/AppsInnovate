@@ -23,7 +23,6 @@ public class HttpManager {
         HttpURLConnection connection = null;
         BufferedReader reader = null;
         try {
-
             connection = (HttpURLConnection) url.openConnection();
             connection.setConnectTimeout(3000);
             connection.setReadTimeout(3000);

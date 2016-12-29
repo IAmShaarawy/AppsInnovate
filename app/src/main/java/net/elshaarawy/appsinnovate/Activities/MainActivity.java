@@ -2,56 +2,77 @@ package net.elshaarawy.appsinnovate.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.login.LoginManager;
+
+import net.elshaarawy.appsinnovate.AsyncTasks.CountriesTask;
+import net.elshaarawy.appsinnovate.Managers.ConnectionManager;
+import net.elshaarawy.appsinnovate.Managers.MyPreferenceManager;
+import net.elshaarawy.appsinnovate.Managers.RealmManager;
 import net.elshaarawy.appsinnovate.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static net.elshaarawy.appsinnovate.Managers.MyPreferenceManager.Keys.*;
+
+
 public class MainActivity extends AppCompatActivity {
 
     private ListView tasksListview;
     private ArrayAdapter<String> tasksAdapter;
+    private MyPreferenceManager preferenceManager;
+    private CountriesTask countriesTask;
+    private RealmManager realmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        preferenceManager = new MyPreferenceManager(this, DEFAULT_SHARED_PREFERENCE);
+        if (preferenceManager.getBoolean(PREF_IS_AUTHENTICATED)) {
+            setContentView(R.layout.activity_main);
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            realmManager = RealmManager.getInstance();
+            tasksListview = (ListView) findViewById(R.id.listview_tasks);
 
+            String[] tasksArray = getResources().getStringArray(R.array.tasks);
+            List<String> tasksList = new ArrayList<>(Arrays.asList(tasksArray));
+            tasksAdapter = new ArrayAdapter<>(this,
+                    R.layout.list_item_task,
+                    R.id.list_item_task_textview,
+                    tasksList);
 
-        tasksListview = (ListView) findViewById(R.id.listview_tasks);
+            tasksListview.setAdapter(tasksAdapter);
 
-        String[] tasksArray = getResources().getStringArray(R.array.tasks);
-        List<String> tasksList = new ArrayList<>(Arrays.asList(tasksArray));
-        tasksAdapter = new ArrayAdapter<>(this,
-                R.layout.list_item_task,
-                R.id.list_item_task_textview,
-                tasksList);
+            tasksListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    tasksActions(i);
+                }
+            });
+        } else {
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+        }
 
-        tasksListview.setAdapter(tasksAdapter);
+    }
 
-        tasksListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                Toast.makeText(MainActivity.this,adapterView.getItemAtPosition(i).toString(),Toast.LENGTH_SHORT).show();
-                tasksActions(i);
-            }
-        });
-
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (!preferenceManager.getBoolean(PREF_IS_FIRST_TIME) && ConnectionManager.getInstance().isOnline(this)) {
+            countriesTask = new CountriesTask(realmManager, this);
+            countriesTask.execute();
+        }
     }
 
     private void tasksActions(int i) {
@@ -67,12 +88,6 @@ public class MainActivity extends AppCompatActivity {
                 intent = new Intent(this, StoresLocationActivity.class);
                 break;
             case 3:
-                intent = new Intent(this, CalendarActivity.class);
-                break;
-            case 4:
-                sharePhotoToFaceBook();
-                break;
-            case 5:
                 logout();
                 break;
             default:
@@ -81,12 +96,12 @@ public class MainActivity extends AppCompatActivity {
         if (intent != null) startActivity(intent);
     }
 
-    private void sharePhotoToFaceBook() {
-        Toast.makeText(this, "sharePhotoToFaceBook", Toast.LENGTH_LONG).show();
-    }
 
     private void logout() {
-        Toast.makeText(this, "logout", Toast.LENGTH_LONG).show();
+        LoginManager.getInstance().logOut();
+        preferenceManager.editValue(PREF_IS_AUTHENTICATED,false);
+        startActivity(new Intent(this, LoginActivity.class));
+        finish();
     }
 
 }

@@ -10,4 +10,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="net.elshaarawy.appsinnovate.Activities.LoginActivity">
 
+    <fragment
+        android:id="@+id/facebook_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout="@layout/fragment_facebook_login"
+        android:layout_centerInParent="true"
+        class="net.elshaarawy.appsinnovate.FacebookFragment"
+        />
+
 </RelativeLayout>

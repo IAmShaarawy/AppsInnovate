@@ -2,10 +2,8 @@
 <resources>
     <array name="tasks" id="@+id/f">
         <item>load all countries with a search option</item>
-        <item>Load phone contacts and swipe to call</item>
+        <item>Load phone contactsPairList and swipe to call</item>
         <item>the Stores location on Map GPS</item>
-        <item>Integrate with Phone calendar to add new event</item>
-        <item>Share Photo to Facebook</item>
         <item>Log out</item>
     </array>
 </resources>

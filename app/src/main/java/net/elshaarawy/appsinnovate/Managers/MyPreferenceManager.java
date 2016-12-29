@@ -9,13 +9,13 @@ import java.util.Set;
  * Created by elshaarawy on 27-Dec-16.
  */
 
-public class PreferenceManager {
+public class MyPreferenceManager {
     private Context context;
     private String SharedPreferenceName;
     private SharedPreferences sharedPreference;
 
 
-    public PreferenceManager(Context context, String sharedPreferenceName) {
+    public MyPreferenceManager(Context context, String sharedPreferenceName) {
         this.context = context;
         this.SharedPreferenceName = sharedPreferenceName;
         this.sharedPreference = context.getSharedPreferences(sharedPreferenceName, Context.MODE_PRIVATE);
@@ -83,7 +83,8 @@ public class PreferenceManager {
 
 
     public static final class Keys {
-        public static final String Default_SHARED_PREFERENCE = "DefaultPreference";
+        public static final String DEFAULT_SHARED_PREFERENCE = "DefaultPreference";
+        public static final String PREF_IS_AUTHENTICATED = "isAuthenticated";
         public static final String PREF_IS_FIRST_TIME = "isFirstTime";
     }
 }
