@@ -10,6 +10,7 @@ nnnnnnnnnnnnnnnnnnnnnnnnnn
 333333333333333333333333
 44444444444444444444444444444
 5555555555555555
+<<<<<<< HEAD
 +++++++++++++++++
 -----------------
 .........................
@@ -17,3 +18,6 @@ ffffffffffffffffffffffffff
 ssssssssssssssssssssssssssssss
 lllllllllllllllllllllllllllllll
 mmmmmmmmmmmmmmmmm
+=======
++++++++++++++++++
+>>>>>>> version1.1
